@@ -1,7 +1,6 @@
 import React from "react";
 import {
   withStyles,
-  makeStyles,
   Slider,
   Grid,
   Box,
@@ -34,18 +33,7 @@ const pricing = (props) => {
   }
 };
 
-const useStyles = makeStyles({
-  cell: {
-    [theme.breakpoints.down("xs")]: {
-      padding: 0,
-    },
-  },
-  titleNumber: {
-    [theme.breakpoints.down("xs")]: {
-      fontSize: "1.5rem",
-    },
-  },
-});
+
 
 const GreyTextTypography = withStyles({
   root: {
@@ -71,7 +59,7 @@ const CaptionTextTypography = withStyles({
 })(Typography);
 
 function App() {
-  const classes = useStyles();
+
 
   const [state, setState] = React.useState({
     price: 10,
@@ -89,8 +77,8 @@ function App() {
   let peakfloPrice = state.price * 1000000;
   return (
     <div className="App">
-      <Grid container direction="column" xs={12}>
-        <Grid item xs={12} container direction="row">
+      <Grid container direction="column">
+        <Grid  container direction="row">
           <Grid item xs={8}>
             <CaptionTextTypography variant="h5">
               Annual credit sales
@@ -117,7 +105,7 @@ function App() {
           />
         </Grid>
       </Grid>
-      <Grid container direction="column" xs={12}>
+      <Grid container direction="column" >
         <Grid item xs={12} container direction="row">
           <Grid item xs={8}>
             <GreyTextTypography align="left" variant="h6">
