@@ -22,13 +22,20 @@ const pricing = (props) => {
   if (props < 10000000) {
     return 499;
   } else if (props < 50000000) {
-    return 499 + .001*(props-10000000)/12;
-  }
-  else if( props < 1000000000){
-    return 499 + (.001*(50000000-10000000)/12) +.0005*(props - 50000000)/12;
-  }
-  else {
-    return 499 + (.001*(50000000-10000000)/12) +(.0005*(100000000 - 50000000)/12) + .00025*(props - 100000000 )/12;
+    return 499 + (0.001 * (props - 10000000)) / 12;
+  } else if (props < 1000000000) {
+    return (
+      499 +
+      (0.001 * (50000000 - 10000000)) / 12 +
+      (0.0005 * (props - 50000000)) / 12
+    );
+  } else {
+    return (
+      499 +
+      (0.001 * (50000000 - 10000000)) / 12 +
+      (0.0005 * (100000000 - 50000000)) / 12 +
+      (0.00025 * (props - 100000000)) / 12
+    );
   }
 };
 
@@ -86,61 +93,60 @@ function App() {
 
   let peakfloPrice = state.price * 1000000;
   return (
-    <Card className="App">
-      <CardContent>
-        <Grid container direction="column">
-          <Grid item xs={12} container direction="row">
-            <Grid item xs={8}>
-              <CaptionTextTypography variant="h5">
-                Annual credit sales
-              </CaptionTextTypography>
-            </Grid>
-            <Grid item xs={4}>
-              <Box textAlign="right">
-                <CaptionTextTypography variant="h5">
-                  ${state.price}M
-                </CaptionTextTypography>
-              </Box>
-            </Grid>
+    <div className="App">
+      <Grid container direction="column" xs={12}>
+        <Grid item xs={12} container direction="row">
+          <Grid item xs={8}>
+            <CaptionTextTypography variant="h5">
+              Annual credit sales
+            </CaptionTextTypography>
           </Grid>
-          <Grid item xs={12}>
-            <IOSSlider
-              name="price"
-              step={1}
-              aria-label="price slider"
-              min={0}
-              max={200}
-              value={state.price}
-              marks={marks}
-              onChange={handleChange("price")}
-            />
+          <Grid item xs={4}>
+            <Box textAlign="right">
+              <CaptionTextTypography variant="h5">
+                ${state.price}M
+              </CaptionTextTypography>
+            </Box>
           </Grid>
         </Grid>
-        <Table aria-label="simple table" width="50%">
-          <TableBody>
-            <TableRow>
-              <TableCell align="left" className={classes.cell}>
-                <GreyTextTypography variant="h6">
-                  Peakflo Pricing
-                </GreyTextTypography>
-              </TableCell>
-              <TableCell align="right">
-                <WhiteTextTypography variant="h6">
-                  <NumberFormat
-                    value={pricing(peakfloPrice)}
-                    displayType="text"
-                    thousandSeparator
-                    decimalScale={0}
-                    prefix="$"
-                  />{" "}
-                  /mo
-                </WhiteTextTypography>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+        <Grid item xs={12}>
+          <IOSSlider
+            name="price"
+            step={1}
+            aria-label="price slider"
+            min={0}
+            max={200}
+            value={state.price}
+            marks={marks}
+            onChange={handleChange("price")}
+          />
+        </Grid>
+      </Grid>
+      <Grid container direction="column" xs={12}>
+        <Grid item xs={12} container direction="row">
+          <Grid item xs={8}>
+            <GreyTextTypography align="left" variant="h6">
+              Peakflo Pricing
+            </GreyTextTypography>
+          </Grid>
+          <Grid item xs={4}>
+            <Box textAlign="right">
+              <WhiteTextTypography variant="h6">
+                <NumberFormat
+                  value={pricing(peakfloPrice)}
+                  displayType="text"
+                  thousandSeparator
+                  decimalScale={0}
+                  prefix="$"
+                />{" "}
+                /mo
+              </WhiteTextTypography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Grid>
+      
+    </div>
   );
 }
 const marks = [
