@@ -22,13 +22,13 @@ const pricing = (props) => {
   if (props < 10000000) {
     return 499;
   } else if (props < 50000000) {
-    return .001*props/12;
+    return 499 + .001*(props-10000000)/12;
   }
   else if( props < 1000000000){
-    return .0005*props/12;
+    return 499 + (.001*(50000000-10000000)/12) +.0005*(props - 50000000)/12;
   }
   else {
-    return .00025*props/12;
+    return 499 + (.001*(50000000-10000000)/12) +(.0005*(100000000 - 50000000)/12) + .00025*(props - 100000000 )/12;
   }
 };
 
