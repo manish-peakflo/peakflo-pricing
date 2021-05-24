@@ -1,25 +1,212 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  withStyles,
+  makeStyles,
+  Slider,
+  Grid,
+  Card,
+  CardContent,
+  Box,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  Typography,
+} from "@material-ui/core";
+import { fade } from "@material-ui/core/styles/colorManipulator";
+import NumberFormat from "react-number-format";
+import theme from "./theme";
+import "./App.css";
+
+const pricing = (props) => {
+  if (props < 10000000) {
+    return 499;
+  } else if (props < 50000000) {
+    return .001*props/12;
+  }
+  else if( props < 1000000000){
+    return .0005*props/12;
+  }
+  else {
+    return .00025*props/12;
+  }
+};
+
+const useStyles = makeStyles({
+  cell: {
+    [theme.breakpoints.down("xs")]: {
+      padding: 0,
+    },
+  },
+  titleNumber: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.5rem",
+    },
+  },
+});
+
+const GreyTextTypography = withStyles({
+  root: {
+    color: fade("rgb(0,0,0)", 0.8),
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "0.7rem",
+    },
+  },
+})(Typography);
+
+const WhiteTextTypography = withStyles({
+  root: {
+    color: "rgb(0,0,0)",
+  },
+})(Typography);
+
+const CaptionTextTypography = withStyles({
+  root: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "0.8rem",
+    },
+  },
+})(Typography);
 
 function App() {
+  const classes = useStyles();
+
+  const [state, setState] = React.useState({
+    price: 10,
+  });
+
+  const handleChange = (name) => (e, value) => {
+    if (state[name] !== value) {
+      setState({
+        ...state,
+        [name]: value, // --> Important bit here: This is how you set the value of sliders
+      });
+    }
+  };
+
+  let peakfloPrice = state.price * 1000000;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Card className="App">
+      <CardContent>
+        <Grid container direction="column">
+          <Grid item xs={12} container direction="row">
+            <Grid item xs={8}>
+              <CaptionTextTypography variant="h5">
+                Annual credit sales
+              </CaptionTextTypography>
+            </Grid>
+            <Grid item xs={4}>
+              <Box textAlign="right">
+                <CaptionTextTypography variant="h5">
+                  ${state.price}M
+                </CaptionTextTypography>
+              </Box>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <IOSSlider
+              name="price"
+              step={1}
+              aria-label="price slider"
+              min={0}
+              max={200}
+              value={state.price}
+              marks={marks}
+              onChange={handleChange("price")}
+            />
+          </Grid>
+        </Grid>
+        <Table aria-label="simple table" width="50%">
+          <TableBody>
+            <TableRow>
+              <TableCell align="left" className={classes.cell}>
+                <GreyTextTypography variant="h6">
+                  Peakflo Pricing
+                </GreyTextTypography>
+              </TableCell>
+              <TableCell align="right">
+                <WhiteTextTypography variant="h6">
+                  <NumberFormat
+                    value={pricing(peakfloPrice)}
+                    displayType="text"
+                    thousandSeparator
+                    decimalScale={0}
+                    prefix="$"
+                  />{" "}
+                  /mo
+                </WhiteTextTypography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }
+const marks = [
+  /* {
+    value: 0,
+    label:'$0M'
+  },
+  {
+    value: 200,
+    label:'$200M'
+
+  }, */
+];
+
+const iOSBoxShadow =
+  "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)";
+
+const IOSSlider = withStyles({
+  root: {
+    color: theme.palette.secondary.main,
+    height: 4,
+    padding: "15px 0",
+  },
+  thumb: {
+    height: 28,
+    width: 28,
+    backgroundColor: "#fff",
+    boxShadow: iOSBoxShadow,
+    marginTop: -14,
+    marginLeft: -14,
+    "&:focus, &:hover, &$active": {
+      boxShadow:
+        "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)",
+      // Reset on touch devices, it doesn't add specificity
+      "@media (hover: none)": {
+        boxShadow: iOSBoxShadow,
+      },
+    },
+  },
+  active: {},
+  valueLabel: {
+    left: "calc(-50% + 12px)",
+    top: -22,
+    "& *": {
+      background: "transparent",
+      color: "#000",
+    },
+  },
+  track: {
+    height: 7,
+  },
+  rail: {
+    height: 7,
+    opacity: 0.5,
+    backgroundColor: "#bfbfbf",
+  },
+  mark: {
+    backgroundColor: "#bfbfbf",
+    height: 8,
+    width: 1,
+    marginTop: -3,
+  },
+  markActive: {
+    opacity: 1,
+    backgroundColor: "currentColor",
+  },
+})(Slider);
 
 export default App;
