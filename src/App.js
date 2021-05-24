@@ -4,13 +4,8 @@ import {
   makeStyles,
   Slider,
   Grid,
-  Card,
-  CardContent,
   Box,
-  Table,
-  TableRow,
-  TableBody,
-  TableCell,
+
   Typography,
 } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
